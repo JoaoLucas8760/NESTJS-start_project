@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+
+postgres-compose:
+image: postgres
+environment:
+  POSTGRES_PASSWORD: ADMIN
+ports: '5432:5432'
