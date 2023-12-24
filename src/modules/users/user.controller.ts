@@ -11,7 +11,10 @@ import { CreateUserUseCase } from './useCases/create-user.usecase';
 import { CreateUserValidationPipe } from './pipe/create-user.validation.pipe';
 import { AuthGuard } from 'src/infra/providers/auth-guard.provider';
 import { ProfileUseCase } from './useCases/profile-user.usecase';
-import { CreateUserSchemaDTO } from './schemas/create-user.schema';
+import {
+  CreateUserResponseSchemaDTO,
+  CreateUserSchemaDTO,
+} from './schemas/create-user.schema';
 
 @Controller('/users')
 export class UserController {
@@ -23,7 +26,8 @@ export class UserController {
   @Post('')
   @UsePipes(new CreateUserValidationPipe())
   async create(@Body() data: CreateUserSchemaDTO) {
-    return await this.createUserUseCase.execute(data);
+    const user = await this.createUserUseCase.execute(data);
+    return CreateUserResponseSchemaDTO.safeParse(user);
   }
 
   @Get('/profile')
