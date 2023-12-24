@@ -9,7 +9,9 @@ import { Injectable } from '@nestjs/common';
 export class UserPrismaRepository implements IUserRepository {
   constructor(private prisma: PrismaService) {}
 
-  async findByUsernameOrEmail(data: UsernameAndEmail): Promise<UserCreatedDTO> {
+  async findByUsernameOrEmail(
+    data: UsernameAndEmail,
+  ): Promise<UserCreatedDTO | null> {
     return await this.prisma.user.findFirst({
       where: {
         OR: [{ username: data.username }, { email: data.email }],
@@ -17,13 +19,13 @@ export class UserPrismaRepository implements IUserRepository {
     });
   }
 
-  async save(data: CreateUserDTO): Promise<UserCreatedDTO> {
+  async save(data: CreateUserDTO): Promise<UserCreatedDTO | null> {
     return await this.prisma.user.create({
       data,
     });
   }
 
-  async findById(id: string): Promise<UserCreatedDTO> {
+  async findById(id: string): Promise<UserCreatedDTO | null> {
     return await this.prisma.user.findFirst({
       where: {
         id: id,
